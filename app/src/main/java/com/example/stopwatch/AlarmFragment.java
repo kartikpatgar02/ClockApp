@@ -2,7 +2,6 @@ package com.example.stopwatch;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,42 +33,40 @@ public class AlarmFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setAlarm();
+                Toast.makeText(getContext(),"Your Alarm is Set", Toast.LENGTH_SHORT).show();
             }
         });
 
-        return view; // You were missing this line
+        return view;
     }
 
     private void setAlarm() {
-        int hour = timePicker.getHour();
-        int minute = timePicker.getMinute();
+        int hour, minute;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            // For Android versions M (23) and above
+            hour = timePicker.getHour();
+            minute = timePicker.getMinute();
+        } else {
+            // For Android versions below M (23)
+            hour = timePicker.getCurrentHour();
+            minute = timePicker.getCurrentMinute();
+        }
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
 
-        long alarmTime = calendar.getTimeInMillis();
-
-        // Create an Intent to be triggered by the alarm
-        Intent alarmIntent = new Intent(requireContext(), AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, alarmIntent, 0);
-
-        // Schedule the alarm using AlarmManager
         AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
-        if (alarmManager != null) {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
-        }
 
-//        Toast.makeText(requireContext(), "Alarm set for " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(requireContext(), AlarmReceiver.class);
+
+        // Specify FLAG_IMMUTABLE or FLAG_MUTABLE based on your requirements
+        int flags = 0; // Use 0 if not sure, or choose FLAG_IMMUTABLE or FLAG_MUTABLE
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, flags | PendingIntent.FLAG_IMMUTABLE);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
-    public class AlarmReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // This method will be called when the alarm is triggered
-            Toast.makeText(context, "Alarm! Time to wake up!", Toast.LENGTH_LONG).show();
-        }
-    }
 }
