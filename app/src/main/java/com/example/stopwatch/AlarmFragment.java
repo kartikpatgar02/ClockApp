@@ -62,6 +62,7 @@ public class AlarmFragment extends Fragment {
         AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(requireContext(), AlarmReceiver.class);
+<<<<<<< HEAD
         intent.setAction("com.example.stopwatch.ALARM_TRIGGER");
 
         // Specify FLAG_IMMUTABLE or FLAG_MUTABLE based on your requirements
@@ -70,6 +71,14 @@ public class AlarmFragment extends Fragment {
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
+=======
+
+        // Specify FLAG_IMMUTABLE or FLAG_MUTABLE based on your requirements
+        int flags = 0; // Use 0 if not sure, or choose FLAG_IMMUTABLE or FLAG_MUTABLE
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, flags | PendingIntent.FLAG_IMMUTABLE);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+>>>>>>> origin/master
     }
 
 }

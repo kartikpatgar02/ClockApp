@@ -7,7 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+<<<<<<< HEAD
 import android.util.Log;
+=======
+>>>>>>> origin/master
 
 import androidx.core.app.NotificationCompat;
 
@@ -17,10 +20,13 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         showNotification(context, "Alarm! Wake up!");
+<<<<<<< HEAD
 
             Log.d("AlarmReceiver", "Alarm received");
             // Your code to handle the alarm event
 
+=======
+>>>>>>> origin/master
     }
 
     private void showNotification(Context context, String message) {
