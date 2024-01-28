@@ -7,10 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-<<<<<<< HEAD
 import android.util.Log;
-=======
->>>>>>> origin/master
 
 import androidx.core.app.NotificationCompat;
 
@@ -20,13 +17,11 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         showNotification(context, "Alarm! Wake up!");
-<<<<<<< HEAD
 
             Log.d("AlarmReceiver", "Alarm received");
             // Your code to handle the alarm event
 
-=======
->>>>>>> origin/master
+
     }
 
     private void showNotification(Context context, String message) {
@@ -40,13 +35,16 @@ public class AlarmReceiver extends BroadcastReceiver {
             notificationManager.createNotificationChannel(channel);
         }
 
+        long[] vibrationPattern = {0, 500, 1000, 500, 1000};
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Alarm")
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setVibrate(vibrationPattern);
+
 
         Notification notification = builder.build();
         notificationManager.notify(0, notification);
